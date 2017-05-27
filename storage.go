@@ -27,5 +27,5 @@ type IStorage interface {
 
 	AddUserRoles(ctx context.Context, usersRoles ...UserRole) error
 	RevokeUserRoles(ctx context.Context, usersRoles ...UserRole) error
-	GetUserRoles(ctx context.Context, userIds ...interface{}) ([]interface{}, error)
+	GetUserRoles(ctx context.Context, userId interface{}) ([]interface{}, error)
 }

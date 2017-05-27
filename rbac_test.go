@@ -133,15 +133,13 @@ func (s *storage) RevokeUserRoles(ctx context.Context, usersRoles ...rbac.UserRo
 	return nil
 }
 
-func (s *storage) GetUserRoles(ctx context.Context, userIds ...interface{}) ([]interface{}, error) {
+func (s *storage) GetUserRoles(ctx context.Context, userId interface{}) ([]interface{}, error) {
 	s.mtx.RLock()
 	defer s.mtx.RUnlock()
 
 	res := make([]interface{}, 0)
-	for _, userId := range userIds {
-		for roleId, _ := range s.userRoles[userId.(int)] {
-			res = append(res, roleId)
-		}
+	for roleId, _ := range s.userRoles[userId.(int)] {
+		res = append(res, roleId)
 	}
 
 	return res, nil
