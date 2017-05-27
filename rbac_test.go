@@ -204,17 +204,17 @@ func TestRBAC_SetUserRoles(t *testing.T) {
 	assert.NoError(t, rbac.AddUserRoles(context.Background(), 2, role1))
 }
 
-func TestRBAC_CheckPermission(t *testing.T) {
+func TestRBAC_HasPermission(t *testing.T) {
 	TestRBAC_SetUserRoles(t)
 
 	ctx, err := rbac.ContextWithPermissions(context.Background(), 1)
 	assert.NoError(t, err)
 
-	res, err := rbac.CheckPermission(ctx, "test.perm1")
-	assert.NoError(t, err)
-	assert.True(t, res)
+	assert.True(t, rbac.HasPermission(ctx, "test.perm1"))
+	assert.False(t, rbac.HasPermission(ctx, "test.perm2"))
+	assert.True(t, rbac.HasPermission(ctx, "test.perm3"))
 
-	res, err = rbac.CheckPermission(ctx, "test.perm2")
-	assert.NoError(t, err)
-	assert.False(t, res)
+	assert.True(t, rbac.HasAnyPermissions(ctx, "test.perm1", "test.perm2"))
+	assert.False(t, rbac.HasAllPermissions(ctx, "test.perm1", "test.perm2"))
+	assert.True(t, rbac.HasAllPermissions(ctx, "test.perm1", "test.perm3"))
 }

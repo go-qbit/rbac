@@ -199,15 +199,42 @@ func (r *RBAC) ContextWithPermissions(ctx context.Context, user_id interface{}) 
 	return context.WithValue(ctx, userPermissionsKey, up), nil
 }
 
-func (r *RBAC) CheckPermission(ctx context.Context, id string) (bool, error) {
+func (r *RBAC) HasPermission(ctx context.Context, id string) bool {
+	return r.HasAllPermissions(ctx, id)
+}
+
+func (r *RBAC) HasAnyPermissions(ctx context.Context, ids ...string) bool {
 	ctxUp := ctx.Value(userPermissionsKey)
 	if ctxUp == nil {
-		return false, qerror.Errorf("Context does not have user permission info")
+		println("Context does not have user permission info")
+		return false
 	}
 
 	up := ctxUp.(*userPermissions)
 
-	_, exists := up.permissions[id]
+	for _, id := range ids {
+		if _, exists := up.permissions[id]; exists {
+			return true
+		}
+	}
 
-	return exists, nil
+	return false
+}
+
+func (r *RBAC) HasAllPermissions(ctx context.Context, ids ...string) bool {
+	ctxUp := ctx.Value(userPermissionsKey)
+	if ctxUp == nil {
+		println("Context does not have user permission info")
+		return false
+	}
+
+	up := ctxUp.(*userPermissions)
+
+	for _, id := range ids {
+		if _, exists := up.permissions[id]; !exists {
+			return false
+		}
+	}
+
+	return true
 }
