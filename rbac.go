@@ -199,11 +199,11 @@ func (r *RBAC) ContextWithPermissions(ctx context.Context, user_id interface{}) 
 	return context.WithValue(ctx, userPermissionsKey, up), nil
 }
 
-func (r *RBAC) HasPermission(ctx context.Context, id string) bool {
-	return r.HasAllPermissions(ctx, id)
+func (r *RBAC) HasPermission(ctx context.Context, permission *Permission) bool {
+	return r.HasAllPermissions(ctx, permission)
 }
 
-func (r *RBAC) HasAnyPermissions(ctx context.Context, ids ...string) bool {
+func (r *RBAC) HasAnyPermissions(ctx context.Context, permissions ...*Permission) bool {
 	ctxUp := ctx.Value(userPermissionsKey)
 	if ctxUp == nil {
 		println("Context does not have user permission info")
@@ -212,8 +212,8 @@ func (r *RBAC) HasAnyPermissions(ctx context.Context, ids ...string) bool {
 
 	up := ctxUp.(*userPermissions)
 
-	for _, id := range ids {
-		if _, exists := up.permissions[id]; exists {
+	for _, permission := range permissions {
+		if _, exists := up.permissions[permission.groupId+"."+permission.id]; exists {
 			return true
 		}
 	}
@@ -221,7 +221,7 @@ func (r *RBAC) HasAnyPermissions(ctx context.Context, ids ...string) bool {
 	return false
 }
 
-func (r *RBAC) HasAllPermissions(ctx context.Context, ids ...string) bool {
+func (r *RBAC) HasAllPermissions(ctx context.Context, permissions ...*Permission) bool {
 	ctxUp := ctx.Value(userPermissionsKey)
 	if ctxUp == nil {
 		println("Context does not have user permission info")
@@ -230,8 +230,8 @@ func (r *RBAC) HasAllPermissions(ctx context.Context, ids ...string) bool {
 
 	up := ctxUp.(*userPermissions)
 
-	for _, id := range ids {
-		if _, exists := up.permissions[id]; !exists {
+	for _, permission := range permissions {
+		if _, exists := up.permissions[permission.groupId+"."+permission.id]; !exists {
 			return false
 		}
 	}

@@ -68,14 +68,14 @@ func ContextWithPermissions(ctx context.Context, user_id interface{}) (context.C
 	return globalRbac.ContextWithPermissions(ctx, user_id)
 }
 
-func HasPermission(ctx context.Context, id string) bool {
-	return globalRbac.HasPermission(ctx, id)
+func HasPermission(ctx context.Context, permission *Permission) bool {
+	return globalRbac.HasPermission(ctx, permission)
 }
 
-func HasAnyPermissions(ctx context.Context, ids ...string) bool {
-	return globalRbac.HasAnyPermissions(ctx, ids...)
+func HasAnyPermissions(ctx context.Context, permissions ...*Permission) bool {
+	return globalRbac.HasAnyPermissions(ctx, permissions...)
 }
 
-func HasAllPermissions(ctx context.Context, ids ...string) bool {
-	return globalRbac.HasAllPermissions(ctx, ids...)
+func HasAllPermissions(ctx context.Context, permissions ...*Permission) bool {
+	return globalRbac.HasAllPermissions(ctx, permissions...)
 }
