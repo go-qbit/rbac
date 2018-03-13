@@ -204,6 +204,10 @@ func (r *RBAC) HasPermission(ctx context.Context, permission *Permission) bool {
 }
 
 func (r *RBAC) HasAnyPermissions(ctx context.Context, permissions ...*Permission) bool {
+	if len(permissions) == 0 {
+		return true
+	}
+
 	ctxUp := ctx.Value(userPermissionsKey)
 	if ctxUp == nil {
 		println("Context does not have user permission info")
@@ -222,6 +226,10 @@ func (r *RBAC) HasAnyPermissions(ctx context.Context, permissions ...*Permission
 }
 
 func (r *RBAC) HasAllPermissions(ctx context.Context, permissions ...*Permission) bool {
+	if len(permissions) == 0 {
+		return true
+	}
+
 	ctxUp := ctx.Value(userPermissionsKey)
 	if ctxUp == nil {
 		println("Context does not have user permission info")
