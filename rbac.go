@@ -204,7 +204,7 @@ func (r *RBAC) HasPermission(ctx context.Context, permission *Permission) bool {
 }
 
 func (r *RBAC) HasAnyPermissions(ctx context.Context, permissions ...*Permission) bool {
-	if len(permissions) == 0 {
+	if len(permissions) == 0 || len(permissions) == 1 && permissions[0] == nil {
 		return true
 	}
 
@@ -217,6 +217,9 @@ func (r *RBAC) HasAnyPermissions(ctx context.Context, permissions ...*Permission
 	up := ctxUp.(*userPermissions)
 
 	for _, permission := range permissions {
+		if permission == nil {
+			return true
+		}
 		if _, exists := up.permissions[permission.groupId+"."+permission.id]; exists {
 			return true
 		}
@@ -226,7 +229,7 @@ func (r *RBAC) HasAnyPermissions(ctx context.Context, permissions ...*Permission
 }
 
 func (r *RBAC) HasAllPermissions(ctx context.Context, permissions ...*Permission) bool {
-	if len(permissions) == 0 {
+	if len(permissions) == 0 || len(permissions) == 1 && permissions[0] == nil {
 		return true
 	}
 
@@ -239,8 +242,10 @@ func (r *RBAC) HasAllPermissions(ctx context.Context, permissions ...*Permission
 	up := ctxUp.(*userPermissions)
 
 	for _, permission := range permissions {
-		if _, exists := up.permissions[permission.groupId+"."+permission.id]; !exists {
-			return false
+		if permission != nil {
+			if _, exists := up.permissions[permission.groupId+"."+permission.id]; !exists {
+				return false
+			}
 		}
 	}
 
