@@ -64,13 +64,6 @@ func (r *RBAC) GetRole(ctx context.Context, id interface{}) (*Role, error) {
 	return roles[0], nil
 }
 
-func (r *RBAC) NewPermission(id, caption string) *Permission {
-	return &Permission{
-		id:      id,
-		caption: caption,
-	}
-}
-
 func (r *RBAC) NewPermissionsGroup(id, caption string) *PermissionsGroup {
 	pg := &PermissionsGroup{
 		id:      id,

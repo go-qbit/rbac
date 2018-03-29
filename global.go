@@ -20,10 +20,6 @@ func GetRole(ctx context.Context, id interface{}) (*Role, error) {
 	return globalRbac.GetRole(ctx, id)
 }
 
-func NewPermission(id, caption string) *Permission {
-	return globalRbac.NewPermission(id, caption)
-}
-
 func NewPermissionsGroup(id, caption string) *PermissionsGroup {
 	return globalRbac.NewPermissionsGroup(id, caption)
 }

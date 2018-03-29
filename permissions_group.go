@@ -32,8 +32,11 @@ func (g *PermissionsGroup) NewPermission(id, caption string) *Permission {
 		panic(fmt.Sprintf("Permission with id '%s' exists", id))
 	}
 
-	p := NewPermission(id, caption)
-	p.groupId = g.id
+	p := &Permission{
+		id:      id,
+		caption: caption,
+		groupId: g.id,
+	}
 
 	g.permissions[p.id] = p
 
