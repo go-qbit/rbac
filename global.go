@@ -24,8 +24,8 @@ func NewPermission(id, caption string) *Permission {
 	return globalRbac.NewPermission(id, caption)
 }
 
-func RegisterPermissionsGroup(id, caption string, permissions ...*Permission) error {
-	return globalRbac.RegisterPermissionsGroup(id, caption, permissions...)
+func NewPermissionsGroup(id, caption string) *PermissionsGroup {
+	return globalRbac.NewPermissionsGroup(id, caption)
 }
 
 func GetPermissionsGroup(id string) *PermissionsGroup {

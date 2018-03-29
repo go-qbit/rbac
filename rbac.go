@@ -2,6 +2,7 @@ package rbac
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"sync"
 
@@ -70,28 +71,22 @@ func (r *RBAC) NewPermission(id, caption string) *Permission {
 	}
 }
 
-func (r *RBAC) RegisterPermissionsGroup(id, caption string, permissions ...*Permission) error {
+func (r *RBAC) NewPermissionsGroup(id, caption string) *PermissionsGroup {
 	pg := &PermissionsGroup{
 		id:      id,
 		caption: caption,
-	}
-
-	for _, p := range permissions {
-		if err := pg.RegisterPermission(p); err != nil {
-			return nil
-		}
 	}
 
 	r.mtx.Lock()
 	defer r.mtx.Unlock()
 
 	if _, exists := r.permissionsGroups[id]; exists {
-		return qerror.Errorf("Permissions group with id '%s' exists")
+		panic(fmt.Sprintf("Permissions group with id '%s' exists", id))
 	}
 
 	r.permissionsGroups[id] = pg
 
-	return nil
+	return pg
 }
 
 func (r *RBAC) GetPermissionsGroup(id string) *PermissionsGroup {

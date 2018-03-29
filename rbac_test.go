@@ -148,9 +148,11 @@ func (s *storage) GetUserRoles(ctx context.Context, userId interface{}) ([]inter
 var role1, role2 interface{}
 
 var (
-	Perm1 = rbac.NewPermission("perm1", "Permission1")
-	Perm2 = rbac.NewPermission("perm2", "Permission2")
-	Perm3 = rbac.NewPermission("perm3", "Permission3")
+	PermGroupTest = rbac.NewPermissionsGroup("test", "Test group")
+
+	Perm1 = PermGroupTest.NewPermission("perm1", "Permission1")
+	Perm2 = PermGroupTest.NewPermission("perm2", "Permission2")
+	Perm3 = PermGroupTest.NewPermission("perm3", "Permission3")
 )
 
 func init() {
@@ -158,8 +160,6 @@ func init() {
 
 	role1, _ = rbac.RegisterRole(context.Background(), "Role 1")
 	role2, _ = rbac.RegisterRole(context.Background(), "Role 2")
-
-	rbac.RegisterPermissionsGroup("test", "Test group", Perm1, Perm2, Perm3)
 }
 
 func TestRBAC_GetRole(t *testing.T) {

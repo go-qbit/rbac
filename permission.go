@@ -17,3 +17,7 @@ func (p *Permission) GetCaption() string {
 func (p *Permission) GetGroupId() string {
 	return p.groupId
 }
+
+func (p *Permission) GetFullId() string {
+	return p.groupId + "." + p.id
+}

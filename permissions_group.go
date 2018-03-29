@@ -1,9 +1,8 @@
 package rbac
 
 import (
+	"fmt"
 	"sync"
-
-	"github.com/go-qbit/qerror"
 )
 
 type PermissionsGroup struct {
@@ -21,7 +20,7 @@ func (g *PermissionsGroup) GetCaption() string {
 	return g.caption
 }
 
-func (g *PermissionsGroup) RegisterPermission(p *Permission) error {
+func (g *PermissionsGroup) NewPermission(id, caption string) *Permission {
 	g.mtx.Lock()
 	defer g.mtx.Unlock()
 
@@ -29,15 +28,16 @@ func (g *PermissionsGroup) RegisterPermission(p *Permission) error {
 		g.permissions = make(map[string]*Permission)
 	}
 
-	if _, exists := g.permissions[p.id]; exists {
-		return qerror.Errorf("Permission with id '%s' exists")
+	if _, exists := g.permissions[id]; exists {
+		panic(fmt.Sprintf("Permission with id '%s' exists", id))
 	}
 
+	p := NewPermission(id, caption)
 	p.groupId = g.id
 
 	g.permissions[p.id] = p
 
-	return nil
+	return p
 }
 
 func (g *PermissionsGroup) GetPermission(id string) *Permission {
