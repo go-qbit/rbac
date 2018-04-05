@@ -192,6 +192,10 @@ func (r *RBAC) HasPermission(ctx context.Context, permission *Permission) bool {
 }
 
 func (r *RBAC) HasAnyPermissions(ctx context.Context, permissions ...*Permission) bool {
+	if isGodMode(ctx) {
+		return true
+	}
+
 	if len(permissions) == 0 || len(permissions) == 1 && permissions[0] == nil {
 		return true
 	}
@@ -217,6 +221,10 @@ func (r *RBAC) HasAnyPermissions(ctx context.Context, permissions ...*Permission
 }
 
 func (r *RBAC) HasAllPermissions(ctx context.Context, permissions ...*Permission) bool {
+	if isGodMode(ctx) {
+		return true
+	}
+
 	if len(permissions) == 0 || len(permissions) == 1 && permissions[0] == nil {
 		return true
 	}
