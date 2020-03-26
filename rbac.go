@@ -202,7 +202,7 @@ func (r *RBAC) HasAnyPermissions(ctx context.Context, permissions ...*Permission
 
 	ctxUp := ctx.Value(userPermissionsKey)
 	if ctxUp == nil {
-		println("Context does not have user permission info")
+		//println("Context does not have user permission info")
 		return false
 	}
 
@@ -231,7 +231,7 @@ func (r *RBAC) HasAllPermissions(ctx context.Context, permissions ...*Permission
 
 	ctxUp := ctx.Value(userPermissionsKey)
 	if ctxUp == nil {
-		println("Context does not have user permission info")
+		//println("Context does not have user permission info")
 		return false
 	}
 
